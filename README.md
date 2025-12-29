@@ -171,11 +171,15 @@ within a college ecosystem.
 ---
 
 ## 👤 Project Team -Shadow 
- 
-1	Harshit Jaiswal	2301010397@krmu.edu.in	Leader
-2	Ashish Yadav	2301010413@krmu.edu.in	Member
-3	Chetan Parmar	2301010384@krmu.edu.in	Member
-4	Harsh Deo	2301010386@krmu.edu.in	Member
+## Team Members
+
+| S.No | Name            | Email ID                    | Role   |
+|-----:|-----------------|-----------------------------|--------|
+| 1    | Harshit Jaiswal | 2301010397@krmu.edu.in      | Leader |
+| 2    | Ashish Yadav    | 2301010413@krmu.edu.in      | Member |
+| 3    | Chetan Parmar  | 2301010384@krmu.edu.in      | Member |
+| 4    | Harsh Deo      | 2301010386@krmu.edu.in      | Member |
+
 ---
 
 ## 📜 License
