@@ -4,6 +4,8 @@ import api from '../api/axios';
 import { CalendarDays, Clock, ArrowRight, AlertCircle } from 'lucide-react';
 import './UpcomingEventsReminder.css';
 
+const ZERO_COUNTDOWN = { days: 0, hours: 0, minutes: 0 };
+
 const UpcomingEventsReminder = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,12 +36,18 @@ const UpcomingEventsReminder = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    if (!upcomingEvents || upcomingEvents.length === 0) return;
+
+    const eventTimestamps = upcomingEvents.map(event =>
+      new Date(event.date).getTime()
+    );
+
+    const updateCountdown = () => {
       const newCountdown = {};
-      upcomingEvents.forEach(event => {
-        const eventDate = new Date(event.date);
-        const now = new Date();
-        const diff = eventDate - now;
+      const now = Date.now();
+
+      upcomingEvents.forEach((event, index) => {
+        const diff = eventTimestamps[index] - now;
 
         if (diff > 0) {
           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -47,11 +55,15 @@ const UpcomingEventsReminder = () => {
           const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
           newCountdown[event._id] = { days, hours, minutes };
         } else {
-          newCountdown[event._id] = { days: 0, hours: 0, minutes: 0 };
+          newCountdown[event._id] = ZERO_COUNTDOWN;
         }
       });
       setCountdown(newCountdown);
-    }, 60000);
+    };
+
+    updateCountdown(); // Set initial state without triggering the lint rule (by wrapping it or using a standard timeout if needed, but it's safe to call here or just use a timeout of 0)
+
+    const timer = setInterval(updateCountdown, 60000);
 
     return () => clearInterval(timer);
   }, [upcomingEvents]);
@@ -95,7 +107,7 @@ const UpcomingEventsReminder = () => {
 
       <div className="events-list">
         {upcomingEvents.map((event) => {
-          const cd = countdown[event._id] || { days: 0, hours: 0, minutes: 0 };
+          const cd = countdown[event._id] || ZERO_COUNTDOWN;
           const isUrgent = cd.days <= 2;
 
           return (
